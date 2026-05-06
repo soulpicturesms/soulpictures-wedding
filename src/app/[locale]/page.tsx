@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -24,50 +24,52 @@ export async function generateMetadata({
 
 function HeroSection() {
   const t = useTranslations('home.hero')
-  const locale = 'en' // will be injected by next-intl context
+  const locale = useLocale()
 
   return (
     <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
-      {/* Background - placeholder gradient until real photo uploaded */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-900">
-        <div className="absolute inset-0 bg-[url('/images/hero-placeholder.jpg')] bg-cover bg-center opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
-      </div>
+      <Image
+        src="/images/hero/hero-01.webp"
+        alt="Destination wedding couple on pier in Punta Cana"
+        fill
+        priority
+        className="object-cover object-center"
+        quality={90}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <p className="text-[#C9A96E] text-xs tracking-[0.4em] uppercase mb-4 font-lato">
+        <p className="text-[#C9A96E] text-xs tracking-[0.4em] uppercase mb-4">
           {t('tagline')}
         </p>
-        <div className="flex items-center justify-center gap-2 text-white/60 text-xs tracking-widest uppercase mb-8">
+        <div className="flex items-center justify-center gap-2 text-white/70 text-xs tracking-widest uppercase mb-8">
           <MapPin size={12} />
           <span>{t('location')}</span>
         </div>
-        <h1 className="text-white font-playfair text-5xl md:text-7xl font-light leading-tight mb-6">
+        <h1 className="text-white font-playfair text-5xl md:text-7xl font-light leading-tight mb-6 drop-shadow-lg">
           {t('headline')}
         </h1>
-        <p className="text-white/70 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-2xl mx-auto">
+        <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed mb-12 max-w-2xl mx-auto drop-shadow">
           {t('subheadline')}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/en/portfolio"
+            href={`/${locale}/portfolio`}
             className="bg-[#C9A96E] hover:bg-[#b8944f] text-black text-sm font-medium tracking-[0.2em] uppercase px-10 py-4 transition-colors duration-200 min-w-[200px]"
           >
             {t('cta')}
           </Link>
           <Link
-            href="/en/contact"
-            className="border border-white/40 hover:border-white text-white text-sm font-light tracking-[0.2em] uppercase px-10 py-4 transition-colors duration-200 min-w-[200px]"
+            href={`/${locale}/contact`}
+            className="border border-white/60 hover:border-white hover:bg-white/10 text-white text-sm font-light tracking-[0.2em] uppercase px-10 py-4 transition-colors duration-200 min-w-[200px]"
           >
             {t('ctaContact')}
           </Link>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <div className="w-px h-12 bg-gradient-to-b from-transparent to-white/40 animate-pulse" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <div className="w-px h-10 bg-gradient-to-b from-transparent to-white/50" />
       </div>
     </section>
   )
@@ -77,11 +79,10 @@ function StatsSection() {
   const t = useTranslations('home.stats')
   const stats = [
     { value: '2,000+', label: t('weddings'), icon: Camera },
-    { value: '15+', label: t('years'), icon: Award },
-    { value: '30+', label: t('venues'), icon: MapPin },
-    { value: '40+', label: t('countries'), icon: Heart },
+    { value: '15+',    label: t('years'),    icon: Award },
+    { value: '30+',    label: t('venues'),   icon: MapPin },
+    { value: '40+',    label: t('countries'),icon: Heart },
   ]
-
   return (
     <section className="bg-black py-16">
       <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -97,18 +98,18 @@ function StatsSection() {
   )
 }
 
+const GALLERY_PHOTOS = [
+  { src: '/images/gallery/wedding-03.webp', alt: 'Bride portrait among tropical palms Punta Cana' },
+  { src: '/images/gallery/wedding-04.webp', alt: 'Artistic bride silhouette destination wedding' },
+  { src: '/images/gallery/wedding-06.webp', alt: 'Beach ceremony circular arch Punta Cana wedding' },
+  { src: '/images/gallery/wedding-05.webp', alt: 'Waterfront wedding ceremony Dominican Republic' },
+  { src: '/images/portfolio/boda-7.webp',   alt: 'Ring exchange beach wedding Punta Cana' },
+  { src: '/images/portfolio/boda-8.webp',   alt: 'Wedding ceremony vows Punta Cana resort' },
+]
+
 function FeaturedSection() {
   const t = useTranslations('home.featured')
-
-  // Placeholder weddings — replaced by real data from Supabase
-  const placeholders = [
-    { title: 'Emma & Carlos', venue: 'Hard Rock Hotel', id: 1 },
-    { title: 'Sofia & Miguel', venue: 'Excellence Punta Cana', id: 2 },
-    { title: 'Isabella & James', venue: 'Bavaro Beach', id: 3 },
-    { title: 'Valentina & André', venue: 'Secrets Royal Beach', id: 4 },
-    { title: 'Camila & Luca', venue: 'Breathless Punta Cana', id: 5 },
-    { title: 'Diana & Roberto', venue: 'Zoëtry Agua', id: 6 },
-  ]
+  const locale = useLocale()
 
   return (
     <section className="py-24 bg-neutral-50">
@@ -117,29 +118,23 @@ function FeaturedSection() {
           <p className="text-[#C9A96E] text-xs tracking-[0.4em] uppercase mb-3">{t('subtitle')}</p>
           <h2 className="font-playfair text-4xl md:text-5xl text-neutral-900 font-light">{t('title')}</h2>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-          {placeholders.map((w) => (
-            <div
-              key={w.id}
-              className="group relative aspect-[4/5] bg-neutral-200 overflow-hidden cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="font-playfair text-xl">{w.title}</p>
-                <p className="text-white/70 text-sm tracking-wider">{w.venue}</p>
-              </div>
-              {/* Placeholder visual */}
-              <div className="w-full h-full flex items-center justify-center">
-                <Camera size={32} className="text-neutral-400" />
-              </div>
+          {GALLERY_PHOTOS.map((photo) => (
+            <div key={photo.src} className="group relative aspect-[4/5] overflow-hidden bg-neutral-200">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           ))}
         </div>
-
         <div className="text-center mt-12">
           <Link
-            href="/en/portfolio"
+            href={`/${locale}/portfolio`}
             className="inline-block border border-neutral-900 hover:bg-neutral-900 hover:text-white text-neutral-900 text-sm tracking-[0.2em] uppercase px-10 py-4 transition-colors duration-200"
           >
             {t('viewAll')}
@@ -152,16 +147,20 @@ function FeaturedSection() {
 
 function AboutSection() {
   const t = useTranslations('home.about')
+  const locale = useLocale()
 
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div className="relative aspect-[3/4] bg-neutral-100">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Camera size={48} className="text-neutral-300" />
-          </div>
-          {/* Gold accent line */}
-          <div className="absolute -bottom-6 -right-6 w-2/3 h-2/3 border border-[#C9A96E]/30 -z-10" />
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <Image
+            src="/images/about/session-01.webp"
+            alt="Couple photography session under palm trees Punta Cana beach"
+            fill
+            className="object-cover"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+          <div className="absolute -bottom-4 -right-4 w-2/3 h-2/3 border border-[#C9A96E]/40 -z-10" />
         </div>
         <div>
           <p className="text-[#C9A96E] text-xs tracking-[0.4em] uppercase mb-4">Soul Pictures</p>
@@ -170,7 +169,7 @@ function AboutSection() {
           </h2>
           <p className="text-neutral-600 leading-relaxed mb-8">{t('body')}</p>
           <Link
-            href="/en/about"
+            href={`/${locale}/about`}
             className="inline-block bg-neutral-900 hover:bg-[#C9A96E] text-white text-sm tracking-[0.2em] uppercase px-8 py-4 transition-colors duration-200"
           >
             {t('learnMore')}
@@ -183,7 +182,6 @@ function AboutSection() {
 
 function TestimonialsSection() {
   const t = useTranslations('home.testimonials')
-
   const testimonials = [
     {
       couple: 'Sarah & Daniel',
@@ -200,7 +198,7 @@ function TestimonialsSection() {
     {
       couple: 'Emma & Thomas',
       venue: 'Secrets Royal Beach',
-      text: 'From our first consultation to the final gallery delivery, everything was flawless. The photos tell our story better than we ever could ourselves.',
+      text: 'From our first consultation to the final gallery delivery, everything was flawless. The photos tell our story better than we ever could.',
       rating: 5,
     },
   ]
@@ -235,15 +233,24 @@ function TestimonialsSection() {
 
 function CtaSection() {
   const t = useTranslations('home.cta')
+  const locale = useLocale()
 
   return (
-    <section className="py-24 bg-[#C9A96E]">
-      <div className="max-w-3xl mx-auto px-6 text-center">
-        <h2 className="font-playfair text-4xl md:text-5xl text-black font-light mb-4">{t('title')}</h2>
-        <p className="text-black/70 text-lg mb-10">{t('subtitle')}</p>
+    <section className="relative py-32 overflow-hidden">
+      <Image
+        src="/images/hero/hero-02.webp"
+        alt="Couple on Punta Cana beach - book your destination wedding photographer"
+        fill
+        className="object-cover object-center"
+        sizes="100vw"
+      />
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+        <h2 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">{t('title')}</h2>
+        <p className="text-white/70 text-lg mb-10">{t('subtitle')}</p>
         <Link
-          href="/en/contact"
-          className="inline-block bg-black hover:bg-neutral-800 text-white text-sm tracking-[0.2em] uppercase px-12 py-5 transition-colors duration-200"
+          href={`/${locale}/contact`}
+          className="inline-block bg-[#C9A96E] hover:bg-[#b8944f] text-black text-sm font-medium tracking-[0.2em] uppercase px-12 py-5 transition-colors duration-200"
         >
           {t('button')}
         </Link>
