@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "about": "About",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact",
+    "bookNow": "Book Now"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Destination Wedding Photographer",
+      "location": "Punta Cana, Dominican Republic",
+      "headline": "Your Love Story, Told Through Light",
+      "subheadline": "Over 2,000 weddings captured in paradise. Let us preserve your most beautiful moments forever.",
+      "cta": "View Portfolio",
+      "ctaContact": "Get in Touch"
+    },
+    "stats": {
+      "weddings": "Weddings Captured",
+      "years": "Years of Experience",
+      "venues": "Partner Venues",
+      "countries": "Countries"
+    },
+    "featured": {
+      "title": "Recent Love Stories",
+      "subtitle": "A glimpse into the magic we create together",
+      "viewAll": "View All Weddings"
+    },
+    "about": {
+      "title": "Your Punta Cana Wedding Photographer",
+      "body": "With over 2,000 destination weddings photographed across the most stunning venues in Punta Cana and the Dominican Republic, we bring an unmatched level of artistry and experience to every celebration.",
+      "learnMore": "Learn More About Us"
+    },
+    "testimonials": {
+      "title": "What Couples Say",
+      "subtitle": "Real words from real couples who trusted us with their day"
+    },
+    "cta": {
+      "title": "Ready to Begin Your Story?",
+      "subtitle": "Limited dates available for 2025 & 2026. Book your consultation today.",
+      "button": "Start Planning"
+    }
+  },
+  "portfolio": {
+    "title": "Wedding Portfolio",
+    "subtitle": "Over 2,000 love stories captured in Punta Cana and beyond",
+    "filterAll": "All Weddings",
+    "filterBeach": "Beach",
+    "filterResort": "Resort",
+    "filterChurch": "Church",
+    "viewGallery": "View Gallery"
+  },
+  "about": {
+    "title": "About Soul Pictures",
+    "headline": "We Don't Just Take Photos — We Tell Love Stories",
+    "body1": "Based in Punta Cana, Dominican Republic, Soul Pictures has been the premier destination wedding photography studio for over a decade. With more than 2,000 weddings in our portfolio, we've perfected the art of capturing genuine emotion in paradise.",
+    "body2": "From the iconic shores of Bavaro Beach to the grand ballrooms of the Hard Rock Hotel, we know every corner of Punta Cana's most breathtaking venues.",
+    "stats": {
+      "weddings": "Weddings",
+      "years": "Years",
+      "venues": "Venues",
+      "awards": "Awards"
+    }
+  },
+  "services": {
+    "title": "Photography Packages",
+    "subtitle": "Tailored to make your destination wedding unforgettable",
+    "contactForPricing": "Contact for Pricing",
+    "packages": {
+      "essential": {
+        "name": "Essential",
+        "description": "Perfect for intimate ceremonies",
+        "features": ["6 hours coverage", "500+ edited photos", "Online gallery", "WebP high-res download"]
+      },
+      "signature": {
+        "name": "Signature",
+        "description": "Our most popular package",
+        "features": ["10 hours coverage", "900+ edited photos", "Engagement session", "Online gallery", "Printed album", "Same-day preview"]
+      },
+      "luxury": {
+        "name": "Luxury",
+        "description": "The complete experience",
+        "features": ["Full day coverage", "1500+ edited photos", "Engagement session", "Drone coverage", "Premium album", "Behind the scenes video", "Priority editing"]
+      }
+    }
+  },
+  "contact": {
+    "title": "Let's Plan Your Dream Wedding",
+    "subtitle": "Tell us about your vision and we'll make it a reality",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone / WhatsApp",
+      "date": "Wedding Date",
+      "venue": "Venue (if known)",
+      "message": "Tell us about your wedding",
+      "submit": "Send Message",
+      "success": "Message sent! We'll be in touch within 24 hours.",
+      "error": "Something went wrong. Please try again."
+    },
+    "whatsapp": "Chat on WhatsApp",
+    "instagram": "Follow on Instagram"
+  },
+  "footer": {
+    "tagline": "Destination Wedding Photographers in Punta Cana",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "blog": {
+    "title": "Wedding Planning Tips & Inspiration",
+    "subtitle": "Expert advice for your Punta Cana destination wedding",
+    "readMore": "Read More",
+    "backToBlog": "Back to Blog"
+  }
+}

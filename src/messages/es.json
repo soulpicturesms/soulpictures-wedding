@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "portfolio": "Portafolio",
+    "about": "Nosotros",
+    "services": "Servicios",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "bookNow": "Reservar"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Fotógrafo de Bodas Destino",
+      "location": "Punta Cana, República Dominicana",
+      "headline": "Tu Historia de Amor, Contada con Luz",
+      "subheadline": "Más de 2,000 bodas capturadas en el paraíso. Dejanos preservar tus momentos más hermosos para siempre.",
+      "cta": "Ver Portafolio",
+      "ctaContact": "Contáctanos"
+    },
+    "stats": {
+      "weddings": "Bodas Realizadas",
+      "years": "Años de Experiencia",
+      "venues": "Venues Asociados",
+      "countries": "Países"
+    },
+    "featured": {
+      "title": "Historias de Amor Recientes",
+      "subtitle": "Un vistazo a la magia que creamos juntos",
+      "viewAll": "Ver Todas las Bodas"
+    },
+    "about": {
+      "title": "Tu Fotógrafo de Bodas en Punta Cana",
+      "body": "Con más de 2,000 bodas destino fotografiadas en los venues más impresionantes de Punta Cana y la República Dominicana, traemos un nivel inigualable de arte y experiencia a cada celebración.",
+      "learnMore": "Conoce Más Sobre Nosotros"
+    },
+    "testimonials": {
+      "title": "Lo Que Dicen las Parejas",
+      "subtitle": "Palabras reales de parejas que confiaron en nosotros"
+    },
+    "cta": {
+      "title": "¿Listo Para Comenzar Tu Historia?",
+      "subtitle": "Fechas limitadas disponibles para 2025 y 2026. Reserva tu consulta hoy.",
+      "button": "Comenzar a Planificar"
+    }
+  },
+  "portfolio": {
+    "title": "Portafolio de Bodas",
+    "subtitle": "Más de 2,000 historias de amor capturadas en Punta Cana y más allá",
+    "filterAll": "Todas",
+    "filterBeach": "Playa",
+    "filterResort": "Resort",
+    "filterChurch": "Iglesia",
+    "viewGallery": "Ver Galería"
+  },
+  "about": {
+    "title": "Sobre Soul Pictures",
+    "headline": "No Solo Tomamos Fotos — Contamos Historias de Amor",
+    "body1": "Con sede en Punta Cana, República Dominicana, Soul Pictures ha sido el estudio líder en fotografía de bodas destino por más de una década. Con más de 2,000 bodas en nuestro portafolio, hemos perfeccionado el arte de capturar emociones genuinas en el paraíso.",
+    "body2": "Desde las icónicas playas de Bávaro hasta los grandes salones del Hard Rock Hotel, conocemos cada rincón de los venues más impresionantes de Punta Cana.",
+    "stats": {
+      "weddings": "Bodas",
+      "years": "Años",
+      "venues": "Venues",
+      "awards": "Premios"
+    }
+  },
+  "services": {
+    "title": "Paquetes de Fotografía",
+    "subtitle": "Diseñados para hacer tu boda destino inolvidable",
+    "contactForPricing": "Consultar Precios",
+    "packages": {
+      "essential": {
+        "name": "Esencial",
+        "description": "Perfecto para ceremonias íntimas",
+        "features": ["6 horas de cobertura", "500+ fotos editadas", "Galería en línea", "Descarga en alta resolución WebP"]
+      },
+      "signature": {
+        "name": "Signature",
+        "description": "Nuestro paquete más popular",
+        "features": ["10 horas de cobertura", "900+ fotos editadas", "Sesión de compromiso", "Galería en línea", "Álbum impreso", "Preview el mismo día"]
+      },
+      "luxury": {
+        "name": "Luxury",
+        "description": "La experiencia completa",
+        "features": ["Cobertura día completo", "1500+ fotos editadas", "Sesión de compromiso", "Cobertura con dron", "Álbum premium", "Video behind the scenes", "Edición prioritaria"]
+      }
+    }
+  },
+  "contact": {
+    "title": "Planifiquemos Tu Boda Soñada",
+    "subtitle": "Cuéntanos tu visión y la haremos realidad",
+    "form": {
+      "name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono / WhatsApp",
+      "date": "Fecha de Boda",
+      "venue": "Venue (si lo conoces)",
+      "message": "Cuéntanos sobre tu boda",
+      "submit": "Enviar Mensaje",
+      "success": "¡Mensaje enviado! Te contactaremos en menos de 24 horas.",
+      "error": "Algo salió mal. Por favor intenta de nuevo."
+    },
+    "whatsapp": "Chatear por WhatsApp",
+    "instagram": "Seguir en Instagram"
+  },
+  "footer": {
+    "tagline": "Fotógrafos de Bodas Destino en Punta Cana",
+    "rights": "Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio"
+  },
+  "blog": {
+    "title": "Tips e Inspiración para tu Boda",
+    "subtitle": "Consejos de expertos para tu boda destino en Punta Cana",
+    "readMore": "Leer Más",
+    "backToBlog": "Volver al Blog"
+  }
+}
