@@ -1,13 +1,10 @@
-import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
 import { getIronSession } from 'iron-session'
 import { sessionOptions, SessionData } from '@/lib/session'
 import { cookies } from 'next/headers'
 
-export default async function AdminPage() {
+export async function POST() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
-  if (session.isLoggedIn) {
-    redirect('/admin/dashboard')
-  } else {
-    redirect('/admin/login')
-  }
+  session.destroy()
+  return NextResponse.json({ ok: true })
 }
