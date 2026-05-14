@@ -3,13 +3,17 @@ import { getIronSession } from 'iron-session'
 import { sessionOptions, SessionData } from '@/lib/session'
 import { cookies } from 'next/headers'
 import sharp from 'sharp'
-import fs from 'fs'
-import path from 'path'
+import { adminClient } from '@/lib/supabase/admin'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
-const VALID_SECTIONS = ['hero', 'gallery', 'portfolio', 'about', 'sessions']
+const VALID_SECTIONS = ['hero', 'gallery', 'portfolio', 'about', 'sessions', 'cta', 'testimonials', 'blog']
+
+const WIDTH_MAP: Record<string, number> = {
+  hero: 3840, gallery: 2400, portfolio: 2400, about: 2400,
+  sessions: 2400, cta: 3840, testimonials: 1600, blog: 2400,
+}
 
 async function checkAuth() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions)
@@ -30,42 +34,50 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No files provided' }, { status: 400 })
   }
 
-  const destDir = path.join(process.cwd(), 'public', 'images', section)
-  fs.mkdirSync(destDir, { recursive: true })
-
+  const db = adminClient()
   const results = []
+
+  // Get current max sort_order for this section
+  const { data: existing } = await db
+    .from('section_photos')
+    .select('sort_order')
+    .eq('section', section)
+    .order('sort_order', { ascending: false })
+    .limit(1)
+  let sortOrder = ((existing?.[0]?.sort_order as number) ?? 0) + 1
 
   for (const file of files) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase()
-    const timestamp = Date.now()
-    const fileName = `${baseName}-${timestamp}.webp`
-    const destPath = path.join(destDir, fileName)
+    const fileName = `${baseName}-${Date.now()}.webp`
+    const storagePath = `${section}/${fileName}`
 
-    const originalSize = buffer.length
-
-    // Convert to WebP + auto-rotate EXIF
-    const widthMap: Record<string, number> = {
-      hero: 1920, gallery: 900, portfolio: 900, about: 900, sessions: 900
-    }
-    const quality = section === 'hero' ? 88 : 85
-
-    await sharp(buffer)
+    const webpBuffer = await sharp(buffer)
       .rotate()
-      .resize(widthMap[section], null, { withoutEnlargement: true })
-      .webp({ quality, effort: 4 })
-      .toFile(destPath)
+      .resize(WIDTH_MAP[section] ?? 2400, null, { withoutEnlargement: true })
+      .webp({ quality: 92, effort: 6, smartSubsample: true })
+      .toBuffer()
 
-    const newSize = fs.statSync(destPath).size
-    const saving = Math.round((1 - newSize / originalSize) * 100)
+    // Upload to Supabase Storage (bucket: media)
+    const { error: uploadError } = await db.storage
+      .from('media')
+      .upload(storagePath, webpBuffer, { contentType: 'image/webp', upsert: true })
 
-    results.push({
-      url: `/images/${section}/${fileName}`,
-      name: fileName,
-      originalSize,
-      newSize,
-      saving,
+    if (uploadError) {
+      return NextResponse.json({ error: uploadError.message }, { status: 500 })
+    }
+
+    const { data: { publicUrl } } = db.storage.from('media').getPublicUrl(storagePath)
+
+    // Save to section_photos table
+    await db.from('section_photos').insert({
+      section,
+      url: publicUrl,
+      filename: fileName,
+      sort_order: sortOrder++,
     })
+
+    results.push({ url: publicUrl, name: fileName, size: webpBuffer.length })
   }
 
   return NextResponse.json({ ok: true, uploaded: results.length, results })

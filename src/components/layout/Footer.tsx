@@ -37,7 +37,7 @@ export default function Footer() {
                 <Mail size={20} />
               </a>
               <a
-                href="https://wa.me/18091234567"
+                href="https://wa.me/18094810241"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/40 hover:text-[#C9A96E] transition-colors"
@@ -83,8 +83,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/18091234567" className="hover:text-[#C9A96E] transition-colors">
-                  WhatsApp: +1 (809) 123-4567
+                <a href="https://wa.me/18094810241" className="hover:text-[#C9A96E] transition-colors">
+                  WhatsApp: +1 (809) 481-0241
                 </a>
               </li>
             </ul>

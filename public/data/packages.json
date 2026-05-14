@@ -1,0 +1,126 @@
+[
+  {
+    "id": "pkg-basic",
+    "name": "Basic",
+    "nameEs": "Basic",
+    "tagline": "2 Hours",
+    "taglineEs": "2 Horas",
+    "price": "",
+    "features": [
+      "1 Photographer + Videographer",
+      "Guests' arrival & decoration",
+      "Ceremony coverage",
+      "Family & couple session",
+      "120+ fully edited images",
+      "10+ edited minutes of video",
+      "15-day delivery",
+      "Photo only · Video only · Both"
+    ],
+    "featuresEs": [
+      "1 Fotógrafo + Videógrafo",
+      "Llegada de invitados y decoración",
+      "Cobertura de la ceremonia",
+      "Sesión familiar y de pareja",
+      "120+ imágenes completamente editadas",
+      "10+ minutos de video editado",
+      "Entrega en 15 días",
+      "Solo foto · Solo video · Ambos"
+    ],
+    "visible": true,
+    "highlighted": false
+  },
+  {
+    "id": "pkg-classic",
+    "name": "Classic",
+    "nameEs": "Classic",
+    "tagline": "4 Hours",
+    "taglineEs": "4 Horas",
+    "price": "",
+    "features": [
+      "1 Photographer + Videographer",
+      "Getting ready coverage",
+      "Full ceremony",
+      "Couple photoshoot",
+      "250+ fully edited images",
+      "15+ edited minutes of video",
+      "15-day delivery",
+      "Photo only · Video only · Both"
+    ],
+    "featuresEs": [
+      "1 Fotógrafo + Videógrafo",
+      "Preparativos de los novios",
+      "Ceremonia completa",
+      "Sesión fotográfica de pareja",
+      "250+ imágenes completamente editadas",
+      "15+ minutos de video editado",
+      "Entrega en 15 días",
+      "Solo foto · Solo video · Ambos"
+    ],
+    "visible": true,
+    "highlighted": false
+  },
+  {
+    "id": "pkg-essential",
+    "name": "E S S E N T I A L",
+    "nameEs": "E S S E N C I A L",
+    "tagline": "7 Hours",
+    "taglineEs": "7 Horas",
+    "price": "",
+    "features": [
+      "1 Photographer + Videographer + Drone",
+      "Getting ready until reception",
+      "400+ fully edited images",
+      "30-day delivery",
+      "Full day video — documentary edit",
+      "Highlight video — cinematic version",
+      "Aerial drone footage",
+      "Photo only · Video only · Both"
+    ],
+    "featuresEs": [
+      "1 Fotógrafo + Videógrafo + Dron",
+      "Desde preparativos hasta recepción",
+      "400+ imágenes completamente editadas",
+      "Entrega en 30 días",
+      "Video completo — edición documental",
+      "Highlight video — versión cinemática",
+      "Tomas aéreas con dron",
+      "Solo foto · Solo video · Ambos"
+    ],
+    "visible": true,
+    "highlighted": true
+  },
+  {
+    "id": "pkg-vip",
+    "name": "V I P",
+    "nameEs": "V I P",
+    "tagline": "9 Hours",
+    "taglineEs": "9 Horas",
+    "price": "",
+    "features": [
+      "1 Photographer + Videographer + Drone",
+      "Getting ready until end of reception",
+      "Second day included",
+      "Welcome dinner or Trash the Dress (+$250)",
+      "550+ fully edited images",
+      "30-day delivery",
+      "Drone footage",
+      "Full day video — documentary edit",
+      "Highlight video — cinematic version",
+      "Photo only · Video only · Both"
+    ],
+    "featuresEs": [
+      "1 Fotógrafo + Videógrafo + Dron",
+      "Desde preparativos hasta el final de recepción",
+      "Segundo día incluido",
+      "Cena de bienvenida o Trash the Dress (+$250)",
+      "550+ imágenes completamente editadas",
+      "Entrega en 30 días",
+      "Tomas con dron",
+      "Video completo — edición documental",
+      "Highlight video — versión cinemática",
+      "Solo foto · Solo video · Ambos"
+    ],
+    "visible": true,
+    "highlighted": false
+  }
+]
