@@ -1042,6 +1042,8 @@ function BlogManager() {
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [coverUploading, setCoverUploading] = useState(false)
+  const [coverReady, setCoverReady] = useState(false)
   const coverRef = useRef<HTMLInputElement>(null)
 
   const load = async () => {
@@ -1109,32 +1111,42 @@ function BlogManager() {
   const openEditor = (post: BlogPost | null) => {
     setEditPost(post)
     setCoverFile(null)
+    setCoverReady(false)
+    setCoverUploading(false)
     setView('editor')
     setMsg('')
   }
 
+  const handleCoverSelect = async (file: File) => {
+    setCoverFile(file)
+    setCoverReady(false)
+    setCoverUploading(true)
+    setMsg('')
+    try {
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+      const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase()
+      const fileName = `${baseName}-${Date.now()}.${file.name.split('.').pop()}`
+      const storagePath = `blog/${fileName}`
+      const { error } = await supabase.storage.from('media').upload(storagePath, file, { upsert: true })
+      if (error) throw new Error(error.message)
+      const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(storagePath)
+      setEditPost(p => p ? { ...p, coverImage: publicUrl } : p)
+      setCoverReady(true)
+    } catch (e) {
+      setMsg(`Cover upload failed: ${e instanceof Error ? e.message : String(e)}`)
+      setCoverReady(false)
+    } finally {
+      setCoverUploading(false)
+    }
+  }
+
   const uploadCover = async (): Promise<string> => {
-    if (!coverFile) return editPost?.coverImage || ''
-
-    // Upload directly to Supabase Storage from the browser (bypasses Vercel 4.5MB limit)
-    const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
-
-    const baseName = coverFile.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase()
-    const fileName = `${baseName}-${Date.now()}.${coverFile.name.split('.').pop()}`
-    const storagePath = `blog/${fileName}`
-
-    const { error } = await supabase.storage
-      .from('media')
-      .upload(storagePath, coverFile, { upsert: true })
-
-    if (error) throw new Error(`Cover upload failed: ${error.message}`)
-
-    const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(storagePath)
-    return publicUrl
+    // Cover is already uploaded on select — just return the current URL
+    return editPost?.coverImage || ''
   }
 
   const savePost = async () => {
@@ -1195,10 +1207,40 @@ function BlogManager() {
           {/* Cover */}
           <div>
             <label className={labelCls}>Cover Image</label>
-            {editPost.coverImage && <img src={editPost.coverImage} className="h-32 object-cover mb-3 opacity-70" alt="" />}
-            <input ref={coverRef} type="file" accept="image/*" className="hidden" onChange={e => setCoverFile(e.target.files?.[0] || null)} />
-            <button onClick={() => coverRef.current?.click()} className="border border-white/20 text-white/50 hover:text-white text-xs tracking-widest uppercase px-5 py-2.5 transition-colors">
-              {coverFile ? coverFile.name : 'Upload Cover Photo'}
+
+            {/* Preview */}
+            {editPost.coverImage && !coverUploading && (
+              <div className="relative mb-3">
+                <img src={editPost.coverImage} className="h-32 w-full object-cover opacity-80" alt="" />
+                {coverReady && (
+                  <div className="absolute top-2 right-2 flex items-center gap-1.5 bg-green-600/90 text-white text-[10px] tracking-widest uppercase px-2 py-1">
+                    <CheckCircle size={10} /> Ready
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Uploading indicator */}
+            {coverUploading && (
+              <div className="h-32 mb-3 border border-white/10 bg-white/[0.02] flex flex-col items-center justify-center gap-3">
+                <Loader2 size={22} className="animate-spin text-[#C9A96E]" />
+                <p className="text-white/50 text-xs tracking-widest uppercase">Uploading image...</p>
+              </div>
+            )}
+
+            <input ref={coverRef} type="file" accept="image/*" className="hidden"
+              onChange={e => { const f = e.target.files?.[0]; if (f) handleCoverSelect(f) }} />
+            <button
+              onClick={() => coverRef.current?.click()}
+              disabled={coverUploading}
+              className="border border-white/20 disabled:opacity-50 text-white/50 hover:text-white text-xs tracking-widest uppercase px-5 py-2.5 transition-colors flex items-center gap-2"
+            >
+              {coverUploading
+                ? <><Loader2 size={12} className="animate-spin" /> Uploading...</>
+                : coverReady
+                  ? <><CheckCircle size={12} className="text-green-400" /> {coverFile?.name ?? 'Change Photo'}</>
+                  : 'Upload Cover Photo'
+              }
             </button>
           </div>
 
@@ -1255,8 +1297,8 @@ function BlogManager() {
 
           {msg && <p className="text-[#C9A96E] text-sm">{msg}</p>}
 
-          <button onClick={savePost} disabled={saving} className="bg-[#C9A96E] hover:bg-[#b8944f] disabled:opacity-60 text-black text-sm font-medium tracking-[0.2em] uppercase px-8 py-4 transition-colors flex items-center gap-2">
-            {saving ? <><Loader2 size={14} className="animate-spin" /> Saving...</> : 'Save Post'}
+          <button onClick={savePost} disabled={saving || coverUploading} className="bg-[#C9A96E] hover:bg-[#b8944f] disabled:opacity-60 text-black text-sm font-medium tracking-[0.2em] uppercase px-8 py-4 transition-colors flex items-center gap-2">
+            {saving ? <><Loader2 size={14} className="animate-spin" /> Saving...</> : coverUploading ? <><Loader2 size={14} className="animate-spin" /> Uploading image...</> : 'Save Post'}
           </button>
         </div>
       </div>
