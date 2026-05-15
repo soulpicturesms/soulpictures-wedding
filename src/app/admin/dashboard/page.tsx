@@ -1562,13 +1562,7 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10 flex flex-col gap-2">
-          <button
-            onClick={() => { window.location.href = '/en' }}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#C9A96E] hover:bg-[#b8944f] text-black text-xs font-semibold tracking-widest uppercase transition-colors"
-          >
-            🌐 Home
-          </button>
+        <div className="p-4 border-t border-white/10">
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-2 px-4 py-2.5 text-white/40 hover:text-white text-sm transition-colors"
