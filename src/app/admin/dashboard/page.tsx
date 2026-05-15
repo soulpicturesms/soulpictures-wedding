@@ -1501,13 +1501,23 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-neutral-950 flex">
 
       {/* Sidebar */}
-      <aside className="w-64 bg-neutral-900 border-r border-white/10 flex flex-col shrink-0">
+      <aside className="w-64 bg-neutral-900 border-r border-white/10 flex flex-col shrink-0 h-screen sticky top-0">
         <div className="p-6 border-b border-white/10">
-          <div className="flex flex-col leading-none">
+          <button onClick={() => { window.location.href = '/en' }} className="flex flex-col leading-none hover:opacity-80 transition-opacity text-left">
             <span className="text-white text-lg font-light tracking-[0.3em] uppercase">Soul</span>
             <span className="text-[#C9A96E] text-lg font-semibold tracking-[0.3em] uppercase">Pictures</span>
+          </button>
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-white/30 text-xs tracking-widest">Admin</p>
+            <button
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              className="flex items-center gap-1 text-white/30 hover:text-white text-xs transition-colors"
+            >
+              <LogOut size={13} />
+              <span>Salir</span>
+            </button>
           </div>
-          <p className="text-white/30 text-xs tracking-widest mt-1">Admin</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -1552,10 +1562,16 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 flex flex-col gap-2">
+          <button
+            onClick={() => { window.location.href = '/en' }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#C9A96E] hover:bg-[#b8944f] text-black text-xs font-semibold tracking-widest uppercase transition-colors"
+          >
+            🌐 Home
+          </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-3 text-white/40 hover:text-white text-sm transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2.5 text-white/40 hover:text-white text-sm transition-colors"
           >
             <LogOut size={16} />
             Cerrar sesión
