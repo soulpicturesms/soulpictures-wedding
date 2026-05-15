@@ -1132,15 +1132,21 @@ function BlogManager() {
       const post: BlogPost = { ...editPost, coverImage, publishedAt: editPost.published ? (editPost.publishedAt || new Date().toISOString()) : editPost.publishedAt }
       const existing = posts.find(p => p.id === post.id)
       const method = existing ? 'PUT' : 'POST'
-      await fetch('/api/admin/blog', {
+      const res = await fetch('/api/admin/blog', {
         method, headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(post)
       })
+      const data = await res.json()
+      if (!res.ok) {
+        setMsg(`Error ${res.status}: ${data.error || JSON.stringify(data)}`)
+        setSaving(false)
+        return
+      }
       setMsg('✓ Saved')
       await load()
       setView('list')
     } catch (e) {
-      setMsg('Error saving post.')
+      setMsg(`Error: ${e instanceof Error ? e.message : String(e)}`)
     }
     setSaving(false)
   }
