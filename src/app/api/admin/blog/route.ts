@@ -4,6 +4,10 @@ import { sessionOptions, SessionData } from '@/lib/session'
 import { cookies } from 'next/headers'
 import { adminClient } from '@/lib/supabase/admin'
 
+export const maxDuration = 60
+
+export const dynamic = 'force-dynamic'
+
 export interface BlogPost {
   id: string
   slug: string
