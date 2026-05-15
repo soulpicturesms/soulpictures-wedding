@@ -1034,6 +1034,7 @@ function BlogManager() {
   const [genStep, setGenStep] = useState<'idle' | 'titles' | 'generating-titles' | 'post' | 'generating-post' | 'error'>('idle')
   const [titles, setTitles] = useState<string[]>([])
   const [selectedTitle, setSelectedTitle] = useState('')
+  const [genContext, setGenContext] = useState('')
   const [generatedPost, setGeneratedPost] = useState<Partial<BlogPost> | null>(null)
 
   // Editor state
@@ -1059,7 +1060,7 @@ function BlogManager() {
     try {
       const res = await fetch('/api/admin/blog/generate', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'titles' })
+        body: JSON.stringify({ mode: 'titles', context: genContext })
       })
       const data = await res.json()
       if (!res.ok) { setGenStep('idle'); setMsg(`Error: ${data.error || res.status}${data.raw ? ' — ' + data.raw.slice(0, 120) : ''}`); return }
@@ -1078,7 +1079,7 @@ function BlogManager() {
     try {
       const res = await fetch('/api/admin/blog/generate', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'post', title })
+        body: JSON.stringify({ mode: 'post', title, context: genContext })
       })
       const data = await res.json()
       const p = data.post
@@ -1264,8 +1265,18 @@ function BlogManager() {
             <div className="border border-white/10 bg-white/[0.02] p-6 mb-6">
               <p className="text-[#C9A96E] text-xs tracking-[0.3em] uppercase mb-2">Step 1 — Generate SEO Titles</p>
               <p className="text-white/50 text-sm leading-relaxed mb-5">
-                The AI will generate 10 SEO-optimized blog post titles focused on destination weddings, Punta Cana venues, photography tips, and planning guides — all designed to rank on Google.
+                The AI will generate 10 SEO-optimized blog post titles. Optionally add context to guide the topic.
               </p>
+              <div className="mb-4">
+                <label className="text-white/40 text-xs tracking-widest uppercase block mb-2">Context (optional)</label>
+                <textarea
+                  value={genContext}
+                  onChange={e => setGenContext(e.target.value)}
+                  placeholder="e.g. Write about beach ceremonies at Hard Rock Hotel, tips for brides, best time of year..."
+                  rows={3}
+                  className="w-full bg-white/5 border border-white/10 focus:border-[#C9A96E]/50 text-white/80 text-sm px-4 py-3 outline-none resize-none placeholder:text-white/20"
+                />
+              </div>
               <button
                 onClick={generateTitles}
                 disabled={genStep === 'generating-titles'}

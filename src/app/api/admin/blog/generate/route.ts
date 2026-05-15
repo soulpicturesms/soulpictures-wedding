@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) return NextResponse.json({ error: 'OPENAI_API_KEY not configured' }, { status: 500 })
 
-  const { mode, title } = await request.json()
+  const { mode, title, context } = await request.json()
+  const contextNote = context?.trim() ? `\n\nExtra context from the user: ${context.trim()}` : ''
   const openai = new OpenAI({ apiKey })
 
   try {
@@ -40,7 +41,7 @@ Mix these angles: specific venue + photographer queries, "how to choose" questio
 
 All titles must naturally include at least one of: "Punta Cana wedding photographer", "destination wedding Dominican Republic", "Caribbean wedding photography", or a specific venue name.
 
-Format: one title per line, numbered 1-10. Nothing else.`
+Format: one title per line, numbered 1-10. Nothing else.${contextNote}`
         }
       ],
     })
@@ -110,7 +111,7 @@ SEO RULES — follow strictly:
 - Mention Soul Pictures MS by name at least twice
 
 HTML tags only: <h2> <h3> <p> <ul> <li>. No html/head/body tags.
-End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in touch.`
+End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in touch.${contextNote}`
         }
       ],
     })
@@ -129,7 +130,7 @@ End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in t
           content: `Escribe un post de blog en español de ~600 palabras para el título: "${meta.titleEs}"
 Es para Soul Pictures MS, estudio de fotografía de bodas de lujo en Punta Cana, República Dominicana.
 Usa solo: <h2> <h3> <p> <ul> <li>. Sin etiquetas html/head/body.
-Termina con un párrafo invitando a las parejas a contactar Soul Pictures MS.`
+Termina con un párrafo invitando a las parejas a contactar Soul Pictures MS.${contextNote}`
         }
       ],
     })
