@@ -67,6 +67,12 @@ export default function Navbar() {
             {otherLocale === 'en' ? 'EN' : 'ES'}
           </Link>
           <Link
+            href="/admin"
+            className="text-white/40 hover:text-white/70 text-xs tracking-widest uppercase transition-colors"
+          >
+            Log In
+          </Link>
+          <Link
             href={`/${locale}/contact`}
             className="bg-[#C9A96E] hover:bg-[#b8944f] text-black text-sm font-medium tracking-widest uppercase px-6 py-2.5 transition-colors duration-200"
           >
