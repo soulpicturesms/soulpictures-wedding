@@ -8,6 +8,14 @@ import { adminClient } from '@/lib/supabase/admin'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb',
+    },
+  },
+}
+
 const VALID_SECTIONS = ['hero', 'gallery', 'portfolio', 'about', 'sessions', 'cta', 'testimonials', 'blog']
 
 const WIDTH_MAP: Record<string, number> = {
@@ -52,10 +60,11 @@ export async function POST(request: NextRequest) {
     const fileName = `${baseName}-${Date.now()}.webp`
     const storagePath = `${section}/${fileName}`
 
+    const quality = section === 'blog' ? 95 : 92
     const webpBuffer = await sharp(buffer)
       .rotate()
       .resize(WIDTH_MAP[section] ?? 2400, null, { withoutEnlargement: true })
-      .webp({ quality: 92, effort: 6, smartSubsample: true })
+      .webp({ quality, effort: 6, smartSubsample: true })
       .toBuffer()
 
     // Upload to Supabase Storage (bucket: media)
