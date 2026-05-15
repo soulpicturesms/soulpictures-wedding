@@ -1115,13 +1115,26 @@ function BlogManager() {
 
   const uploadCover = async (): Promise<string> => {
     if (!coverFile) return editPost?.coverImage || ''
-    const fd = new FormData()
-    fd.append('section', 'blog')
-    fd.append('files', coverFile)
-    const res = await fetch('/api/admin/upload-section', { method: 'POST', body: fd })
-    if (!res.ok) throw new Error('Cover upload failed')
-    const data = await res.json()
-    return data.results[0]?.url || ''
+
+    // Upload directly to Supabase Storage from the browser (bypasses Vercel 4.5MB limit)
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    const baseName = coverFile.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase()
+    const fileName = `${baseName}-${Date.now()}.${coverFile.name.split('.').pop()}`
+    const storagePath = `blog/${fileName}`
+
+    const { error } = await supabase.storage
+      .from('media')
+      .upload(storagePath, coverFile, { upsert: true })
+
+    if (error) throw new Error(`Cover upload failed: ${error.message}`)
+
+    const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(storagePath)
+    return publicUrl
   }
 
   const savePost = async () => {

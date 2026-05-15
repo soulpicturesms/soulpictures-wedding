@@ -103,3 +103,19 @@ CREATE POLICY "public_read_blog_posts"
   ON blog_posts FOR SELECT USING (published = true);
 CREATE POLICY "public_read_section_photos"
   ON section_photos FOR SELECT USING (true);
+
+-- ============================================================
+-- Storage policy: allow authenticated uploads to media bucket
+-- Run this in Supabase SQL Editor
+-- ============================================================
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('media', 'media', true) 
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+CREATE POLICY "allow_public_uploads"
+  ON storage.objects FOR INSERT
+  WITH CHECK (bucket_id = 'media');
+
+CREATE POLICY "allow_public_reads"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'media');
