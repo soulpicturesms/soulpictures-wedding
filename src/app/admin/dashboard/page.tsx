@@ -1491,7 +1491,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
-    router.push('/admin/login')
+    window.location.href = '/en'
   }
 
   const activeItem = MENU_ITEMS.find(s => s.key === activeSection)
