@@ -1129,9 +1129,12 @@ function BlogManager() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       )
       const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase()
-      const fileName = `${baseName}-${Date.now()}.${file.name.split('.').pop()}`
+      const fileName = `${baseName}-${Date.now()}.jpg`
       const storagePath = `blog/${fileName}`
-      const { error } = await supabase.storage.from('media').upload(storagePath, file, { upsert: true })
+      const { error } = await supabase.storage.from('media').upload(storagePath, file, {
+        upsert: true,
+        contentType: 'image/jpeg',
+      })
       if (error) throw new Error(error.message)
       const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(storagePath)
       setEditPost(p => p ? { ...p, coverImage: publicUrl } : p)
