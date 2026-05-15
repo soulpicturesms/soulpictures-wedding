@@ -1,10 +1,69 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations, useLocale } from 'next-intl'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
+
+const FLAGS: Record<string, string> = {
+  en: '🇺🇸',
+  es: '🇪🇸',
+}
+
+const LANG_LABELS: Record<string, string> = {
+  en: 'EN',
+  es: 'ES',
+}
+
+function LangSwitcher({ locale, switchPath }: { locale: string; switchPath: string }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const otherLocale = locale === 'en' ? 'es' : 'en'
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1.5 text-white/60 hover:text-white text-xs tracking-widest uppercase transition-colors"
+      >
+        <span>{FLAGS[locale]}</span>
+        <span>{LANG_LABELS[locale]}</span>
+        <ChevronDown size={10} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-full mt-2 bg-black/95 border border-white/10 min-w-[100px] shadow-xl">
+          {(['en', 'es'] as const).map(lang => (
+            <Link
+              key={lang}
+              href={lang === locale ? '#' : switchPath}
+              onClick={() => setOpen(false)}
+              className={`flex items-center gap-2.5 px-4 py-2.5 text-xs tracking-widest uppercase transition-colors
+                ${lang === locale
+                  ? 'text-[#C9A96E] cursor-default'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+            >
+              <span className="text-base">{FLAGS[lang]}</span>
+              <span>{LANG_LABELS[lang]}</span>
+              {lang === locale && <span className="ml-auto text-[#C9A96E]/60">✓</span>}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function Navbar() {
   const t = useTranslations('nav')
@@ -60,12 +119,7 @@ export default function Navbar() {
 
         {/* Right side */}
         <div className="hidden lg:flex items-center gap-4">
-          <Link
-            href={switchPath}
-            className="text-white/60 hover:text-white text-xs tracking-widest uppercase transition-colors"
-          >
-            {otherLocale === 'en' ? 'EN' : 'ES'}
-          </Link>
+          <LangSwitcher locale={locale} switchPath={switchPath} />
           <Link
             href={`/${locale}/contact`}
             className="bg-[#C9A96E] hover:bg-[#b8944f] text-black text-sm font-medium tracking-widest uppercase px-6 py-2.5 transition-colors duration-200"
@@ -106,12 +160,14 @@ export default function Navbar() {
               </li>
             ))}
             <li className="border-t border-white/10 pt-4 flex items-center gap-4">
+              {/* Mobile lang switcher */}
               <Link
                 href={switchPath}
                 onClick={() => setMenuOpen(false)}
-                className="text-white/60 hover:text-white text-xs tracking-widest uppercase"
+                className="flex items-center gap-1.5 text-white/60 hover:text-white text-xs tracking-widest uppercase"
               >
-                {otherLocale === 'en' ? 'EN' : 'ES'}
+                <span>{FLAGS[otherLocale]}</span>
+                <span>{LANG_LABELS[otherLocale]}</span>
               </Link>
               <Link
                 href={`/${locale}/contact`}
