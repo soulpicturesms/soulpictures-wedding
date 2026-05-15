@@ -16,33 +16,37 @@ export async function POST(request: NextRequest) {
   if (!apiKey) return NextResponse.json({ error: 'OPENAI_API_KEY not configured' }, { status: 500 })
 
   const { mode, title, context } = await request.json()
-  const contextNote = context?.trim() ? `\n\nExtra context from the user: ${context.trim()}` : ''
+  const userContext = context?.trim() || ''
   const openai = new OpenAI({ apiKey })
 
   try {
 
   // ── Titles: plain text, one per line ──────────────────────────────────────
   if (mode === 'titles') {
+    const titlesPrompt = userContext
+      ? `Generate 10 unique blog post titles for Soul Pictures MS, a destination wedding photographer in Punta Cana, Dominican Republic.
+
+The user wants titles specifically about: "${userContext}"
+
+Build ALL 10 titles around that specific topic. Each title must be different in angle (how-to, what to expect, tips, real story, cost, timing, etc.). Include relevant keywords naturally (venue names, "Punta Cana wedding photographer", "destination wedding Dominican Republic", etc.).
+
+Format: one title per line, numbered 1-10. Nothing else.`
+      : `Generate 10 unique blog post titles for Soul Pictures MS, a destination wedding photographer in Punta Cana, Dominican Republic.
+
+Target LOW-COMPETITION, HIGH-INTENT long-tail keywords. Use specific venue names like: Hard Rock Punta Cana, Excellence Punta Cana, Secrets Royal Beach, Barceló Bávaro, Cap Cana, Dreams Royal Beach, Zoëtry, Sanctuary Cap Cana.
+
+Mix angles: venue + photographer queries, "how to choose", what to expect, best time of year, real wedding stories, cost/value, unique Caribbean details.
+
+Each title must be different. Include "Punta Cana wedding photographer", "destination wedding Dominican Republic", "Caribbean wedding photography", or a venue name naturally.
+
+Format: one title per line, numbered 1-10. Nothing else.`
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       max_tokens: 600,
       messages: [
-        {
-          role: 'system',
-          content: 'You are an SEO expert for wedding photography. Reply with a numbered list only, no extra text.'
-        },
-        {
-          role: 'user',
-          content: `Give me 10 blog post titles for Soul Pictures MS, a destination wedding photographer in Punta Cana, Dominican Republic.
-
-Target LOW-COMPETITION, HIGH-INTENT long-tail keywords that couples search before booking a photographer. Use specific venue names like: Hard Rock Punta Cana, Excellence Punta Cana, Secrets Royal Beach, Barceló Bávaro, Cap Cana, Dreams Royal Beach, Zoëtry, Sanctuary Cap Cana.
-
-Mix these angles: specific venue + photographer queries, "how to choose" questions, what to expect posts, best time of year, real wedding stories, cost/value questions, unique Caribbean wedding details.
-
-All titles must naturally include at least one of: "Punta Cana wedding photographer", "destination wedding Dominican Republic", "Caribbean wedding photography", or a specific venue name.
-
-Format: one title per line, numbered 1-10. Nothing else.${contextNote}`
-        }
+        { role: 'system', content: 'You are an SEO expert for wedding photography. Reply with a numbered list only, no extra text.' },
+        { role: 'user', content: titlesPrompt }
       ],
     })
 
@@ -111,7 +115,7 @@ SEO RULES — follow strictly:
 - Mention Soul Pictures MS by name at least twice
 
 HTML tags only: <h2> <h3> <p> <ul> <li>. No html/head/body tags.
-End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in touch.${contextNote}`
+End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in touch.${userContext ? `\n\nFocus especially on: ${userContext}` : ''}`
         }
       ],
     })
@@ -130,7 +134,7 @@ End with a genuine CTA paragraph mentioning Soul Pictures MS and how to get in t
           content: `Escribe un post de blog en español de ~600 palabras para el título: "${meta.titleEs}"
 Es para Soul Pictures MS, estudio de fotografía de bodas de lujo en Punta Cana, República Dominicana.
 Usa solo: <h2> <h3> <p> <ul> <li>. Sin etiquetas html/head/body.
-Termina con un párrafo invitando a las parejas a contactar Soul Pictures MS.${contextNote}`
+Termina con un párrafo invitando a las parejas a contactar Soul Pictures MS.${userContext ? `\n\nEnfócate especialmente en: ${userContext}` : ''}`
         }
       ],
     })
