@@ -1507,17 +1507,7 @@ export default function AdminDashboard() {
             <span className="text-white text-lg font-light tracking-[0.3em] uppercase">Soul</span>
             <span className="text-[#C9A96E] text-lg font-semibold tracking-[0.3em] uppercase">Pictures</span>
           </button>
-          <div className="flex items-center justify-between mt-2">
-            <p className="text-white/30 text-xs tracking-widest">Admin</p>
-            <button
-              onClick={handleLogout}
-              title="Cerrar sesión"
-              className="flex items-center gap-1 text-white/30 hover:text-white text-xs transition-colors"
-            >
-              <LogOut size={13} />
-              <span>Salir</span>
-            </button>
-          </div>
+          <p className="text-white/30 text-xs tracking-widest mt-2">Admin</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
